@@ -26,6 +26,7 @@ describe('Roles', function () {
             Role::factory()->create(['name' => 'Another role']);
 
             visit(route('roles.index'))
+                ->press('@search-toggle')
                 ->type('search', 'This role')
                 ->press('@search-button')
                 ->assertSee('Mostrando 1 a 1 de 1 resultados')

@@ -61,9 +61,7 @@ export function SearchControls({
     className?: string;
 }) {
     const [searchExpanded, setSearchExpanded] = useState(false);
-    const [previousSearch, setPreviousSearch] = useState(
-        search.initialSearch,
-    );
+    const [previousSearch, setPreviousSearch] = useState(search.initialSearch);
 
     if (search.initialSearch !== previousSearch) {
         setPreviousSearch(search.initialSearch);
@@ -124,6 +122,7 @@ export function SearchControls({
                     variant="outline"
                     className="border-dashed"
                     onClick={() => setSearchExpanded(true)}
+                    data-test="search-toggle"
                 >
                     <SearchIcon />
                     Buscar

@@ -40,6 +40,7 @@ describe('Employees', function () {
                 ->create();
 
             visit(route('employees.index'))
+                ->press('@search-toggle')
                 ->type('search', $targetUser->name)
                 ->press('@search-button')
                 ->assertSee('Mostrando 1 a 1 de 1 resultados')
