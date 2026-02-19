@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Employee;
+use App\Models\Division;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
