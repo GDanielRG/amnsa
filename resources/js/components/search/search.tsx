@@ -13,7 +13,7 @@ import type { SearchFilter } from '@/types';
 import type { RouteFn, RouteMutationFn } from '@/types/wayfinder';
 import { Form, usePage } from '@inertiajs/react';
 import { SearchIcon } from 'lucide-react';
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 
 interface UseSearchReturn {
     routeFn: RouteFn;
@@ -60,18 +60,6 @@ export function SearchControls({
     placeholder?: string;
     className?: string;
 }) {
-    const [searchExpanded, setSearchExpanded] = useState(false);
-    const [previousSearch, setPreviousSearch] = useState(search.initialSearch);
-
-    if (search.initialSearch !== previousSearch) {
-        setPreviousSearch(search.initialSearch);
-        if (!search.initialSearch) {
-            setSearchExpanded(false);
-        }
-    }
-
-    const searchOpen = searchExpanded || !!search.initialSearch;
-
     return (
         <Form
             {...search.routeFn.form()}
@@ -99,35 +87,22 @@ export function SearchControls({
             }}
             className={cn('flex flex-wrap items-center gap-3', className)}
         >
-            {searchOpen ? (
-                <ButtonGroup className="w-full sm:w-min sm:min-w-xs">
-                    <Input
-                        type="search"
-                        name="search"
-                        placeholder={placeholder}
-                        defaultValue={search.initialSearch}
-                        data-test="search-input"
-                    />
-                    <Button
-                        data-test="search-button"
-                        type="submit"
-                        variant="outline"
-                    >
-                        <SearchIcon />
-                    </Button>
-                </ButtonGroup>
-            ) : (
+            <ButtonGroup className="w-full sm:w-min sm:min-w-xs">
+                <Input
+                    type="search"
+                    name="search"
+                    placeholder={placeholder}
+                    defaultValue={search.initialSearch}
+                    data-test="search-input"
+                />
                 <Button
-                    type="button"
+                    data-test="search-button"
+                    type="submit"
                     variant="outline"
-                    className="border-dashed"
-                    onClick={() => setSearchExpanded(true)}
-                    data-test="search-toggle"
                 >
                     <SearchIcon />
-                    Buscar
                 </Button>
-            )}
+            </ButtonGroup>
 
             {search.filters.length > 0 && (
                 <Filters

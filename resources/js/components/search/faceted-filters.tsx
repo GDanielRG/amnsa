@@ -130,7 +130,7 @@ export default function FacetedFilters({
                                 </Button>
                             )}
                         />
-                        <PopoverContent className="w-[220px] p-0" align="start">
+                        <PopoverContent className="w-fit p-0" align="start">
                             <Command>
                                 <CommandInput placeholder={filter.label} />
                                 <CommandList>
@@ -180,21 +180,23 @@ export default function FacetedFilters({
                                                 );
                                             })}
                                     </CommandGroup>
-                                    {selectedValues.length > 0 && (
-                                        <>
-                                            <CommandSeparator />
-                                            <CommandGroup>
-                                                <CommandItem
-                                                    onSelect={resetFilter}
-                                                    className="justify-center text-center text-destructive"
-                                                >
-                                                    <FunnelXIcon className="size-4" />
-                                                    Limpiar filtro
-                                                </CommandItem>
-                                            </CommandGroup>
-                                        </>
-                                    )}
                                 </CommandList>
+                                {selectedValues.length > 0 && (
+                                    <>
+                                <CommandSeparator />
+
+                                    <div className="p-1">
+                                        <Button
+                                            className="w-full hover:text-destructive hover:bg-destructive/20 dark:hover:bg-destructive/30"
+                                            variant="ghost"
+                                            onClick={resetFilter}
+                                            >
+                                            <FunnelXIcon/>
+                                            Limpiar filtro
+                                        </Button>
+                                    </div>
+                                            </>
+                                )}
                             </Command>
                         </PopoverContent>
                     </Popover>

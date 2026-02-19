@@ -29,7 +29,6 @@ describe('Divisions', function () {
             Division::factory()->create(['name' => 'Nave Sur']);
 
             visit(route('divisions.index'))
-                ->press('@search-toggle')
                 ->type('search', 'Nave Norte')
                 ->press('@search-button')
                 ->assertSee('Mostrando 1 a 1 de 1 resultados')

@@ -42,7 +42,7 @@ export default function RoleShow({ role }: { role: Role }) {
                 </ActionsDropdownMenu>
             }
         >
-            <Container className="my-6 max-w-2xl md:my-4">
+            <Container className="my-6 max-w-3xl md:my-4">
                 <Card>
                     <CardHeader>
                         <CardTitle>Permisos</CardTitle>

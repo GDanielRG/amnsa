@@ -25,7 +25,6 @@ import RowActionsCell from '@/components/table/row-actions-cell';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Table,
     TableBody,
@@ -215,9 +214,6 @@ function EmployeesTable({
                 <Table className="max-md:mx-6">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-10">
-                                <Checkbox aria-label="Seleccionar todos" />
-                            </TableHead>
                             {isVisible('personal') && (
                                 <TableHead>
                                     <ColumnHeaderMenu
@@ -260,9 +256,7 @@ function EmployeesTable({
                                     />
                                 </TableHead>
                             )}
-                            <TableHead className="w-14 min-w-14 text-right">
-                                <span className="sr-only">Acciones</span>
-                            </TableHead>
+                            <TableHead />
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -271,11 +265,6 @@ function EmployeesTable({
                                 data-test={`employee-${employee.id}`}
                                 key={employee.id}
                             >
-                                <TableCell>
-                                    <Checkbox
-                                        aria-label={`Seleccionar ${employee.user.name}`}
-                                    />
-                                </TableCell>
                                 {isVisible('personal') && (
                                     <TableCell>
                                         <div className="flex gap-2">

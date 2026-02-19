@@ -32,7 +32,7 @@ export default function ColumnHeaderMenu({
                     <Button
                         variant={open ? 'secondary' : 'ghost'}
                         size="sm"
-                        className="-ml-2 h-8 px-2"
+                        className="h-8 px-2"
                     />
                 }
             >
@@ -42,11 +42,11 @@ export default function ColumnHeaderMenu({
             <DropdownMenuContent align="start" className="w-44">
                 <DropdownMenuItem onClick={() => undefined}>
                     <ArrowUpIcon />
-                    Orden ascendente (demo)
+                    ascendente
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => undefined}>
                     <ArrowDownIcon />
-                    Orden descendente (demo)
+                    descendente
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

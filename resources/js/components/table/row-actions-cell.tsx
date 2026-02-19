@@ -1,4 +1,5 @@
-import RowActionsMenu from '@/components/table/row-actions-menu';
+import ActionsDropdownMenu from '@/components/actions-dropdown-menu';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenuItem,
     DropdownMenuSeparator,
@@ -6,7 +7,7 @@ import {
 import { TableCell } from '@/components/ui/table';
 import type { InertiaLinkProps } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
-import { EyeIcon, PencilIcon, TrashIcon } from 'lucide-react';
+import { EyeIcon, MoreHorizontalIcon, PencilIcon, TrashIcon } from 'lucide-react';
 
 type LinkHref = InertiaLinkProps['href'];
 
@@ -26,15 +27,27 @@ export default function RowActionsCell({
     const hasViewOrEdit = showHref || editHref;
 
     return (
-        <TableCell className="sticky right-0 z-10 w-14 min-w-14 text-right max-md:right-6">
-            <RowActionsMenu triggerDataTest={`${dataTestPrefix}-actions`}>
+        <TableCell>
+            <ActionsDropdownMenu
+                align="end"
+                trigger={(open) => (
+                    <Button
+                        variant={open ? 'secondary' : 'outline'}
+                        size="icon-lg"
+                        data-test={`${dataTestPrefix}-actions`}
+                    >
+                        <MoreHorizontalIcon />
+                        <span className="sr-only">Acciones</span>
+                    </Button>
+                )}
+            >
                 {showHref && (
                     <DropdownMenuItem
                         data-test={`${dataTestPrefix}-action-view`}
                         render={<Link href={showHref} prefetch />}
                     >
                         <EyeIcon />
-                        Ver
+                        Ver detalle
                     </DropdownMenuItem>
                 )}
                 {editHref && (
@@ -57,7 +70,7 @@ export default function RowActionsCell({
                         Eliminar
                     </DropdownMenuItem>
                 )}
-            </RowActionsMenu>
+            </ActionsDropdownMenu>
         </TableCell>
     );
 }

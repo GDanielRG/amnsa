@@ -169,7 +169,7 @@ export function PermissionSummary({ ...props }: PermissionSummaryProps) {
         <Popover>
             <Badge
                 variant="outline"
-                className="group"
+                className="group underline"
                 render={<PopoverTrigger />}
             >
                 <ChevronDownIcon className="transition-transform duration-200 group-data-[popup-open]:rotate-180" />

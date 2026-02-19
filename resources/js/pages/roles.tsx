@@ -23,7 +23,6 @@ import ColumnVisibilityMenu, {
 } from '@/components/table/column-visibility-menu';
 import RowActionsCell from '@/components/table/row-actions-cell';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
     Table,
     TableBody,
@@ -81,7 +80,7 @@ export default function Roles({ roles }: { roles: PaginatedData<Role> }) {
                 </>
             }
         >
-            <Container className="my-6 max-w-4xl space-y-6 md:my-4 md:space-y-4">
+            <Container className="my-6 max-w-3xl space-y-6 md:my-4 md:space-y-4">
                 {showEmptyCard ? (
                     <EmptyCard
                         icon={ShieldIcon}
@@ -188,9 +187,6 @@ function RolesTable({
                 <Table className="max-md:mx-6">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-10">
-                                <Checkbox aria-label="Seleccionar todos" />
-                            </TableHead>
                             {isVisible('name') && (
                                 <TableHead>
                                     <ColumnHeaderMenu
@@ -219,9 +215,8 @@ function RolesTable({
                                     />
                                 </TableHead>
                             )}
-                            <TableHead className="w-14 min-w-14 text-right">
-                                <span className="sr-only">Acciones</span>
-                            </TableHead>
+                                <TableHead />
+
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -230,11 +225,6 @@ function RolesTable({
                                 data-test={`role-${role.id}`}
                                 key={role.id}
                             >
-                                <TableCell>
-                                    <Checkbox
-                                        aria-label={`Seleccionar ${role.name}`}
-                                    />
-                                </TableCell>
                                 {isVisible('name') && (
                                     <TableCell>{role.name}</TableCell>
                                 )}
