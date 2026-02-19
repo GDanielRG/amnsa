@@ -6,10 +6,11 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 
 @custom-variant dark (&:is(.dark *));
+@import '@fontsource-variable/geist';
 
 @theme {
     --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Geist Variable', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
@@ -29,8 +30,8 @@
     --color-primary: var(--color-teal-600);
     --color-primary-foreground: var(--color-teal-50);
 
-    --color-secondary: var(--color-teal-50);
-    --color-secondary-foreground: var(--color-teal-600);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
 
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);
@@ -69,8 +70,8 @@
     --popover-foreground: oklch(0.145 0 0);
     --primary: oklch(0.6 0.1 185);
     --primary-foreground: oklch(0.98 0.01 181);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.97 0 0);
@@ -104,7 +105,7 @@
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.7 0.12 183);
     --primary-foreground: oklch(0.28 0.04 193);
-    --secondary: oklch(0.274 0.006 286.033);
+    --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
     --muted-foreground: oklch(0.708 0 0);

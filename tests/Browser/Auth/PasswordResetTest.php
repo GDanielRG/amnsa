@@ -9,8 +9,8 @@ use function Pest\Laravel\assertInvalidCredentials;
 
 it('displays the reset password link page', function () {
     visit('/forgot-password')
-        ->assertSee('Forgot password')
-        ->assertSee('Enter your email to receive a password reset link')
+        ->assertSee('¿Olvidaste tu contraseña?')
+        ->assertSee('Ingresa tu correo para recibir un enlace de restablecimiento')
         ->assertNoSmoke();
 });
 
@@ -20,9 +20,9 @@ it('allows requesting a password reset link', function () {
     Notification::fake();
 
     visit('/login')
-        ->click('Forgot password?')
+        ->click('¿Olvidaste tu contraseña?')
         ->assertPathIs('/forgot-password')
-        ->assertSee('Enter your email to receive a password reset link')
+        ->assertSee('Ingresa tu correo para recibir un enlace de restablecimiento')
         ->type('email', $user->email)
         ->press('@email-password-reset-link-button')
         ->assertNoSmoke();
@@ -42,7 +42,7 @@ it('displays the reset password page', function () {
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
         visit(url("/reset-password/{$notification->token}?email=".urlencode($user->email)))
-            ->assertSee('Reset password')
+            ->assertSee('Restablecer contraseña')
             ->assertValue('input[name=email]', $user->email)
             ->assertNoSmoke();
 
@@ -62,7 +62,7 @@ it('allows password reset with valid token', function () {
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
         visit(url("/reset-password/{$notification->token}?email=".urlencode($user->email)))
-            ->assertSee('Reset password')
+            ->assertSee('Restablecer contraseña')
             ->assertValue('input[name=email]', $user->email)
             ->assertNoSmoke()
             ->type('password', 'new-password')
@@ -87,7 +87,7 @@ it('prevents password reset with invalid token', function () {
         ->type('password', 'new-password')
         ->type('password_confirmation', 'new-password')
         ->press('@reset-password-button')
-        ->assertSee('This password reset token is invalid.')
+        ->assertSee('Este token de restablecimiento de contraseña no es válido.')
         ->assertNoSmoke();
 
     assertInvalidCredentials([
