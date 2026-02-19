@@ -29,7 +29,7 @@ class Employee extends Model
         return $this->hasOne(Operator::class);
     }
 
-    protected function scopeFilter(Builder $query, array $filters = []): void
+    public function scopeFilter(Builder $query, array $filters = []): void
     {
         $query->when($filters['search'] ?? null, function (Builder $query, $search) {
             $query->whereHas('user', function (Builder $query) use ($search) {

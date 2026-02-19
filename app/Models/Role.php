@@ -13,7 +13,7 @@ class Role extends SpatieRole
 
     protected $guarded = [];
 
-    protected function scopeFilter(Builder $query, array $filters = []): void
+    public function scopeFilter(Builder $query, array $filters = []): void
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {

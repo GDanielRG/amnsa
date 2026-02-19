@@ -19,7 +19,7 @@ class Division extends Model
         return $this->hasMany(Operator::class);
     }
 
-    protected function scopeFilter(Builder $query, array $filters = []): void
+    public function scopeFilter(Builder $query, array $filters = []): void
     {
         $query->when($filters['search'] ?? null, function (Builder $query, $search) {
             $query->where('name', 'ilike', "%{$search}%");
