@@ -40,15 +40,16 @@ import type { Employee, PaginatedData, Role, SearchFilter } from '@/types';
 import { Form, Link } from '@inertiajs/react';
 import {
     BanIcon,
-    CheckIcon,
     Plus,
     SearchXIcon,
     SquareUserRoundIcon,
+    WarehouseIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 
 const toggleableColumns: ColumnDef[] = [
     { key: 'personal', label: 'Personal' },
+    { key: 'operator', label: 'Operador' },
     { key: 'rolesAndPermissions', label: 'Roles y permisos' },
 ];
 
@@ -64,6 +65,7 @@ export default function Employees({
         Record<string, boolean>
     >({
         personal: true,
+        operator: true,
         rolesAndPermissions: true,
     });
     const [deletingEmployee, setDeletingEmployee] = useState<Employee | null>(
@@ -198,7 +200,11 @@ function EmployeesTable({
     const getInitials = useInitials();
 
     const isVisible = (key: string) => columnVisibility[key] !== false;
-    const visibleColumnCount = ['personal', 'rolesAndPermissions'].filter(
+    const visibleColumnCount = [
+        'personal',
+        'operator',
+        'rolesAndPermissions',
+    ].filter(
         isVisible,
     ).length;
     const canHideColumn = visibleColumnCount > 1;
@@ -220,6 +226,20 @@ function EmployeesTable({
                                         onHide={() =>
                                             onColumnVisibilityChange(
                                                 'personal',
+                                                false,
+                                            )
+                                        }
+                                    />
+                                </TableHead>
+                            )}
+                            {isVisible('operator') && (
+                                <TableHead>
+                                    <ColumnHeaderMenu
+                                        title="Operador"
+                                        canHide={canHideColumn}
+                                        onHide={() =>
+                                            onColumnVisibilityChange(
+                                                'operator',
                                                 false,
                                             )
                                         }
@@ -270,18 +290,26 @@ function EmployeesTable({
                                                 {employee.user.name}
                                                 <br />
                                                 {employee.user.email}
-                                                <br />
-                                                {employee.operator && (
-                                                    <Badge
-                                                        className="mt-1"
-                                                        variant="outline"
-                                                    >
-                                                        <CheckIcon />
-                                                        Afilador
-                                                    </Badge>
-                                                )}
                                             </div>
                                         </div>
+                                    </TableCell>
+                                )}
+                                {isVisible('operator') && (
+                                    <TableCell>
+                                        {employee.operator?.division ? (
+                                            <Badge variant="outline">
+                                                <WarehouseIcon />
+                                                {
+                                                    employee.operator.division
+                                                        .name
+                                                }
+                                            </Badge>
+                                        ) : (
+                                            <Badge variant="outline">
+                                                <BanIcon />
+                                                Inactivo
+                                            </Badge>
+                                        )}
                                     </TableCell>
                                 )}
                                 {isVisible('rolesAndPermissions') && (

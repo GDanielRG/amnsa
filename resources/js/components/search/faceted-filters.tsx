@@ -18,7 +18,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import type { SearchFilter } from '@/types';
-import { CheckIcon, FunnelPlusIcon } from 'lucide-react';
+import { CheckIcon, FunnelPlusIcon, FunnelXIcon } from 'lucide-react';
 
 interface FacetedFiltersProps {
     filters: SearchFilter[];
@@ -43,7 +43,7 @@ export default function FacetedFilters({
     return (
         <div
             className={cn(
-                'flex w-full flex-wrap items-center gap-3 sm:w-auto',
+                'flex flex-wrap items-center gap-3',
                 className,
             )}
         >
@@ -186,8 +186,9 @@ export default function FacetedFilters({
                                             <CommandGroup>
                                                 <CommandItem
                                                     onSelect={resetFilter}
-                                                    className="justify-center text-center"
+                                                    className="justify-center text-center text-destructive"
                                                 >
+                                                    <FunnelXIcon className="size-4" />
                                                     Limpiar filtro
                                                 </CommandItem>
                                             </CommandGroup>

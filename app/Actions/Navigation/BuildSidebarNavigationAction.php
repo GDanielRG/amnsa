@@ -2,6 +2,7 @@
 
 namespace App\Actions\Navigation;
 
+use App\Models\Division;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
@@ -26,6 +27,12 @@ class BuildSidebarNavigationAction
 
         if ($personnelItem !== null) {
             $items[] = $personnelItem;
+        }
+
+        $divisionsItem = $this->buildDivisionsItem($user);
+
+        if ($divisionsItem !== null) {
+            $items[] = $divisionsItem;
         }
 
         return $items;
@@ -96,6 +103,44 @@ class BuildSidebarNavigationAction
             'href' => route('employees.index', absolute: false),
             'iconKey' => 'square-user-round',
             'activePaths' => ['/employees'],
+            'quickActions' => $quickActions,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function buildDivisionsItem(User $user): ?array
+    {
+        if (! $user->can('viewAny', Division::class)) {
+            return null;
+        }
+
+        $quickActions = [];
+
+        if ($user->can('create', Division::class)) {
+            $quickActions[] = [
+                'type' => 'link',
+                'text' => 'Crear nave',
+                'iconKey' => 'plus',
+                'href' => route('divisions.create', absolute: false),
+            ];
+        }
+
+        if (Division::query()->exists()) {
+            $quickActions[] = [
+                'type' => 'export',
+                'text' => 'Exportar',
+                'iconKey' => 'cloud-download',
+                'exportTarget' => 'divisions',
+            ];
+        }
+
+        return [
+            'title' => 'Naves',
+            'href' => route('divisions.index', absolute: false),
+            'iconKey' => 'warehouse',
+            'activePaths' => ['/divisions'],
             'quickActions' => $quickActions,
         ];
     }

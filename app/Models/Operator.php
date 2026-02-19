@@ -17,4 +17,9 @@ class Operator extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
 }

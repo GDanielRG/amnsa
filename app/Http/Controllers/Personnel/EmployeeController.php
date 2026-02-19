@@ -14,6 +14,7 @@ use App\Http\Requests\Employees\IndexEmployeeRequest;
 use App\Http\Requests\Employees\ShowEmployeeRequest;
 use App\Http\Requests\Employees\StoreEmployeeRequest;
 use App\Http\Requests\Employees\UpdateEmployeeRequest;
+use App\Models\Division;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Support\SearchFilterCatalog;
@@ -26,8 +27,8 @@ class EmployeeController extends Controller
     public function index(IndexEmployeeRequest $request, GetPermissionsKeyValueAction $permissionsAction, SearchFilterCatalog $catalog): Response
     {
         return Inertia::render('employees', [
-            'employees' => Employee::filter($request->only('search', 'has_operator_account', 'role'))
-                ->with(['user', 'operator', 'roles.permissions'])
+            'employees' => Employee::filter($request->only('search', 'has_operator_account', 'role', 'division'))
+                ->with(['user', 'operator.division', 'roles.permissions'])
                 ->paginate()->withQueryString(),
             'permissionNames' => $permissionsAction(),
             'filters' => $catalog->forEmployees(),
@@ -39,6 +40,7 @@ class EmployeeController extends Controller
         return Inertia::render('employee-creation', [
             'roles' => Role::with('permissions')->get(),
             'permissionNames' => $permissionsAction(),
+            'divisions' => Division::orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -48,8 +50,9 @@ class EmployeeController extends Controller
             name: $request->name,
             email: $request->email,
             getLowInventoryNotification: $request->get_low_inventory_notification,
-            hasOperatorAccount: $request->has_operator_account,
-            roles: $request->roles ?? []
+            hasOperatorAccount: $request->division !== null,
+            roles: $request->roles ?? [],
+            divisionId: $request->division,
         );
 
         Inertia::flash('success', 'Personal agregado exitosamente');
@@ -60,7 +63,7 @@ class EmployeeController extends Controller
     public function show(ShowEmployeeRequest $request, Employee $employee, GetPermissionsKeyValueAction $permissionsAction): Response
     {
         return Inertia::render('employee', [
-            'employee' => $employee->load(['user', 'operator', 'roles.permissions']),
+            'employee' => $employee->load(['user', 'operator.division', 'roles.permissions']),
             'permissionNames' => $permissionsAction(),
         ]);
     }
@@ -68,9 +71,10 @@ class EmployeeController extends Controller
     public function edit(EditEmployeeRequest $request, Employee $employee, GetPermissionsKeyValueAction $permissionsAction): Response
     {
         return Inertia::render('employee-edit', [
-            'employee' => $employee->load(['user', 'operator', 'roles']),
+            'employee' => $employee->load(['user', 'operator.division', 'roles']),
             'roles' => Role::with('permissions')->get(),
             'permissionNames' => $permissionsAction(),
+            'divisions' => Division::orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -83,8 +87,9 @@ class EmployeeController extends Controller
             name: $request->name,
             email: $request->email,
             getLowInventoryNotification: $request->get_low_inventory_notification,
-            hasOperatorAccount: $request->has_operator_account,
-            roles: $request->roles ?? []
+            hasOperatorAccount: $request->division !== null,
+            roles: $request->roles ?? [],
+            divisionId: $request->division,
         )]);
     }
 

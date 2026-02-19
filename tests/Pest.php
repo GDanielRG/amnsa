@@ -56,3 +56,8 @@ function actingAsUserWithPersonnelRole(string|App\Models\Role|null $role = null)
 {
     actingAsUserWithPermissions([config('amnsa.user_and_role_permission')], $role ?? 'Administrador de personal');
 }
+
+function actingAsUserWithDivisionsRole(string|App\Models\Role|null $role = null): void
+{
+    actingAsUserWithPermissions([config('amnsa.divisions_permission')], $role ?? 'Administrador de naves');
+}

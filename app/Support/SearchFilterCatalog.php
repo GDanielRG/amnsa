@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Division;
 use App\Models\Role;
 
 class SearchFilterCatalog
@@ -13,6 +14,19 @@ class SearchFilterCatalog
     {
         return [
             [
+                'key' => 'role',
+                'label' => 'Rol',
+                'options' => self::withAllOption('Todos', Role::query()
+                    ->orderBy('name')
+                    ->pluck('name', 'id')
+                    ->map(fn (string $name, int $id) => [
+                        'label' => $name,
+                        'value' => (string) $id,
+                    ])
+                    ->values()
+                    ->all()),
+            ],
+            [
                 'key' => 'has_operator_account',
                 'label' => 'Operador',
                 'options' => self::withAllOption('Todos', [
@@ -21,12 +35,12 @@ class SearchFilterCatalog
                 ]),
             ],
             [
-                'key' => 'role',
-                'label' => 'Rol',
-                'options' => self::withAllOption('Todos', Role::query()
+                'key' => 'division',
+                'label' => 'Nave',
+                'options' => self::withAllOption('Todas', Division::query()
                     ->orderBy('name')
                     ->pluck('name', 'id')
-                    ->map(fn(string $name, int $id) => [
+                    ->map(fn (string $name, int $id) => [
                         'label' => $name,
                         'value' => (string) $id,
                     ])
@@ -55,7 +69,7 @@ class SearchFilterCatalog
         foreach ($catalog as $filter) {
             $key = $filter['key'];
             $values = collect(is_array($filters[$key] ?? null) ? $filters[$key] : [$filters[$key] ?? null])
-                ->filter(fn(mixed $value) => $value !== '' && $value !== null)
+                ->filter(fn (mixed $value) => $value !== '' && $value !== null)
                 ->values();
 
             if ($values->isEmpty()) {

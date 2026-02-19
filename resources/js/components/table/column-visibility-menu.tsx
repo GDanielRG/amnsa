@@ -52,7 +52,7 @@ export default function ColumnVisibilityMenu({
             <DropdownMenuContent align="end" className="w-fit">
                 <DropdownMenuGroup>
                     <DropdownMenuLabel>
-                        Visibilidad de columnas
+                        Columnas
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     {columns.map((column) => {

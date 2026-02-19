@@ -17,11 +17,7 @@ class Role extends SpatieRole
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $searchOperator = $query->getConnection()->getDriverName() === 'pgsql'
-                    ? 'ilike'
-                    : 'like';
-
-                $query->where('name', $searchOperator, "%{$search}%");
+                $query->where('name', 'ilike', "%{$search}%");
             });
         });
     }

@@ -33,16 +33,12 @@ class Employee extends Model
     {
         $query->when($filters['search'] ?? null, function (Builder $query, $search) {
             $query->whereHas('user', function (Builder $query) use ($search) {
-                $searchOperator = $query->getConnection()->getDriverName() === 'pgsql'
-                    ? 'ilike'
-                    : 'like';
-
-                $query->where('name', $searchOperator, "%{$search}%")
-                    ->orWhere('email', $searchOperator, "%{$search}%");
+                $query->where('name', 'ilike', "%{$search}%")
+                    ->orWhere('email', 'ilike', "%{$search}%");
             });
         })->when($filters['has_operator_account'] ?? null, function (Builder $query, $hasOperatorAccount) {
             $operatorAccountFilters = collect(is_array($hasOperatorAccount) ? $hasOperatorAccount : [$hasOperatorAccount])
-                ->filter(fn(mixed $value) => in_array($value, ['active', 'inactive'], true))
+                ->filter(fn (mixed $value) => in_array($value, ['active', 'inactive'], true))
                 ->unique()
                 ->values();
 
@@ -57,8 +53,8 @@ class Employee extends Model
             }
         })->when($filters['role'] ?? null, function (Builder $query, $role) {
             $roleIds = collect(is_array($role) ? $role : [$role])
-                ->filter(fn(mixed $value) => is_numeric($value))
-                ->map(fn(mixed $value) => (int) $value)
+                ->filter(fn (mixed $value) => is_numeric($value))
+                ->map(fn (mixed $value) => (int) $value)
                 ->unique()
                 ->values()
                 ->all();
@@ -67,7 +63,20 @@ class Employee extends Model
                 return;
             }
 
-            $query->whereHas('roles', fn(Builder $q) => $q->whereKey($roleIds));
+            $query->whereHas('roles', fn (Builder $q) => $q->whereKey($roleIds));
+        })->when($filters['division'] ?? null, function (Builder $query, $division) {
+            $divisionIds = collect(is_array($division) ? $division : [$division])
+                ->filter(fn (mixed $value) => is_numeric($value))
+                ->map(fn (mixed $value) => (int) $value)
+                ->unique()
+                ->values()
+                ->all();
+
+            if ($divisionIds === []) {
+                return;
+            }
+
+            $query->whereHas('operator', fn (Builder $q) => $q->whereIn('division_id', $divisionIds));
         });
     }
 

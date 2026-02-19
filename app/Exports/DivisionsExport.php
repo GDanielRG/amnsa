@@ -2,21 +2,21 @@
 
 namespace App\Exports;
 
-use App\Models\Employee;
+use App\Models\Division;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class EmployeesExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMapping
+class DivisionsExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMapping
 {
     public function __construct(private array $filters = []) {}
 
     public function query(): Builder
     {
-        return Employee::query()
-            ->with(['user', 'roles', 'operator.division'])
+        return Division::query()
+            ->withCount('operators')
             ->filter($this->filters)
             ->latest();
     }
@@ -28,24 +28,18 @@ class EmployeesExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMa
     {
         return [
             'Nombre',
-            'Correo electrónico',
-            'Operador',
-            'Roles',
+            'Operadores',
         ];
     }
 
     /**
      * @return array<int, mixed>
      */
-    public function map($employee): array
+    public function map($division): array
     {
         return [
-            $employee->user->name,
-            $employee->user->email,
-            $employee->operator
-                ? 'Nave '.$employee->operator->division->name
-                : 'Inactivo',
-            $employee->roles->pluck('name')->implode(', ') ?: 'Sin roles',
+            $division->name,
+            $division->operators_count,
         ];
     }
 }

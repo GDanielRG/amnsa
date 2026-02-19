@@ -22,7 +22,7 @@ class UpdateEmployeeRequest extends FormRequest
             'roles' => ['nullable', 'array', new AtLeastOneEmployeeHasUserAndRolePermission($this->route('employee'))],
             'roles.*' => ['exists:roles,id'],
             'get_low_inventory_notification' => ['required', 'boolean'],
-            'has_operator_account' => ['required', 'boolean'],
+            'division' => ['nullable', 'exists:divisions,id'],
         ];
     }
 }

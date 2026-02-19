@@ -197,6 +197,7 @@ return [
     */
 
     'attributes' => [
+        'division' => 'nave',
         'email' => 'correo electrónico',
         'get_low_inventory_notification' => 'notificación de inventario bajo',
         'has_operator_account' => 'cuenta de operador',

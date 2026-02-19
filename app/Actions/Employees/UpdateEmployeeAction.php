@@ -12,9 +12,9 @@ class UpdateEmployeeAction
     /**
      * @param  array<int, int>  $roles
      */
-    public function __invoke(Employee $employee, string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = []): Employee
+    public function __invoke(Employee $employee, string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = [], ?int $divisionId = null): Employee
     {
-        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles, $employee) {
+        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles, $employee, $divisionId) {
             $employee->user->update([
                 'name' => $name,
                 'email' => $email,
@@ -30,9 +30,11 @@ class UpdateEmployeeAction
                 $operator = Operator::withTrashed()->where('employee_id', $employee->id)->first();
                 if ($operator) {
                     $operator->restore();
+                    $operator->update(['division_id' => $divisionId]);
                 } else {
                     Operator::create([
                         'employee_id' => $employee->id,
+                        'division_id' => $divisionId,
                     ]);
                 }
             } else {

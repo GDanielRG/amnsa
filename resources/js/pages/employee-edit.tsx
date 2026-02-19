@@ -2,15 +2,17 @@ import { show } from '@/actions/App/Http/Controllers/Personnel/EmployeeControlle
 import Container from '@/components/app-container';
 import EmployeeForm from '@/components/employees/employee-form';
 import AppLayout from '@/layouts/app-layout';
-import type { Employee, Role } from '@/types';
+import type { Division, Employee, Role } from '@/types';
 
 export default function EmployeeEdit({
     employee,
     roles,
+    divisions,
     permissionNames,
 }: {
     employee: Employee;
     roles: Role[];
+    divisions: Division[];
     permissionNames: { [key: string]: string };
 }) {
     return (
@@ -19,6 +21,7 @@ export default function EmployeeEdit({
                 <EmployeeForm
                     employee={employee}
                     roles={roles}
+                    divisions={divisions}
                     permissionNames={permissionNames}
                     className="max-w-3xl space-y-6 md:space-y-4"
                 />

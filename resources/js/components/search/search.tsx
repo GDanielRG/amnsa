@@ -154,31 +154,31 @@ export function SearchResults({
     toolbar?: ReactNode;
 }) {
     return (
-        <div className="space-y-3">
-            <SearchAppliedFilters
-                filters={search.filters}
-                filterValues={search.filterValues}
-                searchValue={search.initialSearch}
-            />
-            <div className="flex flex-row items-center justify-between gap-3">
+        <div className="flex flex-wrap justify-between gap-3">
+            <div className="self-center space-y-2">
                 <p className="line-clamp-2 text-xs leading-none text-muted-foreground">
                     {resultsMessage}
                 </p>
-                {(toolbar || exportAction) && (
-                    <ButtonGroup>
-                        {exportAction && (
-                            <ExportDialog
-                                exportAction={exportAction}
-                                searchFilters={search.filters}
-                                filterValues={search.filterValues}
-                                searchValue={search.initialSearch}
-                                title={exportTitle}
-                            />
-                        )}
-                        {toolbar}
-                    </ButtonGroup>
-                )}
+                <SearchAppliedFilters
+                    filters={search.filters}
+                    filterValues={search.filterValues}
+                    searchValue={search.initialSearch}
+                />
             </div>
+            {(toolbar || exportAction) && (
+                <ButtonGroup className="ml-auto shrink-0 self-end">
+                    {exportAction && (
+                        <ExportDialog
+                            exportAction={exportAction}
+                            searchFilters={search.filters}
+                            filterValues={search.filterValues}
+                            searchValue={search.initialSearch}
+                            title={exportTitle}
+                        />
+                    )}
+                    {toolbar}
+                </ButtonGroup>
+            )}
         </div>
     );
 }

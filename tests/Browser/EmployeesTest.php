@@ -1,6 +1,7 @@
 <?php
 
 use App\Jobs\ProcessEmployeesSpreadsheetExport;
+use App\Models\Division;
 use App\Models\Employee;
 use App\Models\Operator;
 use App\Models\Role;
@@ -79,7 +80,7 @@ describe('Employees', function () {
 
             visit(route('employees.index'))
                 ->click('Operador')
-                ->click('Inactivo')
+                ->click('@filter-has_operator_account-option-inactive')
                 ->assertSee($inactiveOperatorUser->name)
                 ->assertDontSee($activeOperatorUser->name)
                 ->assertNoSmoke();
@@ -156,6 +157,7 @@ describe('Employees', function () {
 
         it('creates with operator account toggle', function (bool $willHaveOperatorAccount) {
             $userData = User::factory()->make();
+            $division = Division::factory()->create();
             assertDatabaseCount(Employee::class, 1);
 
             $page = visit(route('employees.create'))
@@ -165,6 +167,11 @@ describe('Employees', function () {
             $willHaveOperatorAccount
                 ? $page->click('@has_operator_account_1')
                 : $page->click('@has_operator_account_0');
+
+            if ($willHaveOperatorAccount) {
+                $page->click('@division-select')
+                    ->click("@division-option-{$division->id}");
+            }
 
             $page->click('@combobox-chips-input');
             Role::all()->each(function (Role $role) use ($page) {
@@ -185,9 +192,12 @@ describe('Employees', function () {
                 ->name->toBe($userData->name)
                 ->email->toBe($userData->email);
 
-            $willHaveOperatorAccount
-                ? expect($employee->operator)->not->toBeNull()
-                : expect($employee->operator)->toBeNull();
+            if ($willHaveOperatorAccount) {
+                expect($employee->operator)->not->toBeNull();
+                expect($employee->operator->division_id)->toBe($division->id);
+            } else {
+                expect($employee->operator)->toBeNull();
+            }
         })->with('operator_account');
     });
 
@@ -225,6 +235,8 @@ describe('Employees', function () {
         });
 
         it('updates with operator account toggle', function (bool $willHaveOperatorAccount) {
+            $division = Division::factory()->create();
+
             $employee = $willHaveOperatorAccount
                 ? Employee::factory()->create()
                 : Employee::factory()->hasOperator()->create();
@@ -245,6 +257,11 @@ describe('Employees', function () {
             $willHaveOperatorAccount
                 ? $page->click('@has_operator_account_1')
                 : $page->click('@has_operator_account_0');
+
+            if ($willHaveOperatorAccount) {
+                $page->click('@division-select')
+                    ->click("@division-option-{$division->id}");
+            }
 
             $page->click('@combobox-chips-input');
             Role::all()->each(function (Role $role) use ($page) {
@@ -267,9 +284,12 @@ describe('Employees', function () {
                 expect($employee->hasRole($role))->toBeTrue();
             }
 
-            $willHaveOperatorAccount
-                ? expect($employee->operator)->not->toBeNull()
-                : expect($employee->operator)->toBeNull();
+            if ($willHaveOperatorAccount) {
+                expect($employee->operator)->not->toBeNull();
+                expect($employee->operator->division_id)->toBe($division->id);
+            } else {
+                expect($employee->operator)->toBeNull();
+            }
         })->with('operator_account');
 
         it('validates required fields', function () {

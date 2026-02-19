@@ -31,9 +31,16 @@ import {
 } from '@/components/ui/input-group';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
-import type { Employee, Role } from '@/types';
+import type { Division, Employee, Role } from '@/types';
 import { Form } from '@inertiajs/react';
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
@@ -46,6 +53,7 @@ interface RoleOption {
 interface EmployeeFormProps {
     employee?: Employee;
     roles: Role[];
+    divisions: Division[];
     permissionNames: { [key: string]: string };
     className?: string;
 }
@@ -53,6 +61,7 @@ interface EmployeeFormProps {
 export default function EmployeeForm({
     employee,
     roles,
+    divisions,
     permissionNames,
     className,
 }: EmployeeFormProps) {
@@ -106,6 +115,7 @@ export default function EmployeeForm({
                     onGetLowInventoryNotificationChange={
                         setGetLowInventoryNotification
                     }
+                    divisions={divisions}
                     errors={errors}
                     processing={processing}
                 />
@@ -123,6 +133,7 @@ interface EmployeeFormFieldsProps {
     permissionNames: { [key: string]: string };
     getLowInventoryNotification: boolean;
     onGetLowInventoryNotificationChange: (value: boolean) => void;
+    divisions: Division[];
     errors: Record<string, string | undefined>;
     processing: boolean;
 }
@@ -136,9 +147,14 @@ function EmployeeFormFields({
     permissionNames,
     getLowInventoryNotification,
     onGetLowInventoryNotificationChange,
+    divisions,
     errors,
     processing,
 }: EmployeeFormFieldsProps) {
+    const [hasOperatorAccount, setHasOperatorAccount] = useState(
+        employee?.operator ? '1' : '0',
+    );
+
     return (
         <>
             <FieldGroup className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-4">
@@ -181,8 +197,8 @@ function EmployeeFormFields({
 
                     <RadioGroup
                         id="has_operator_account"
-                        name="has_operator_account"
-                        defaultValue={employee?.operator ? '1' : '0'}
+                        value={hasOperatorAccount}
+                        onValueChange={setHasOperatorAccount}
                         className="gap-4 md:grid md:grid-cols-2"
                         aria-invalid={!!errors.has_operator_account}
                     >
@@ -224,6 +240,36 @@ function EmployeeFormFields({
 
                     <FieldError>{errors.has_operator_account}</FieldError>
                 </Field>
+
+                {hasOperatorAccount === '1' && (
+                    <Field data-invalid={!!errors.division}>
+                        <FieldLabel htmlFor="division">Nave</FieldLabel>
+                        <Select
+                            name="division"
+                            defaultValue={employee?.operator?.division_id?.toString()}
+                        >
+                            <SelectTrigger
+                                id="division"
+                                aria-invalid={!!errors.division}
+                                data-test="division-select"
+                            >
+                                <SelectValue placeholder="Seleccionar nave" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {divisions.map((division) => (
+                                    <SelectItem
+                                        key={division.id}
+                                        value={division.id.toString()}
+                                        data-test={`division-option-${division.id}`}
+                                    >
+                                        {division.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <FieldError>{errors.division}</FieldError>
+                    </Field>
+                )}
 
                 <Field
                     data-invalid={!!errors.get_low_inventory_notification}

@@ -70,7 +70,7 @@ export default function SearchAppliedFilters({
     return (
         <div
             className={cn(
-                'group/applied flex flex-wrap items-center gap-2',
+                'flex flex-wrap items-center gap-2',
                 className,
             )}
         >
@@ -80,7 +80,7 @@ export default function SearchAppliedFilters({
                     trigger={(open) => (
                         <Button
                             variant={open ? 'secondary' : 'outline'}
-                            className="max-w-full justify-start transition-colors group-has-[[data-clear]:hover]/applied:border-destructive/50 group-has-[[data-clear]:hover]/applied:text-destructive"
+                            className="max-w-full justify-start"
                         >
                             <SearchIcon />
                             <Separator
@@ -89,7 +89,7 @@ export default function SearchAppliedFilters({
                             />
                             <Badge
                                 variant="secondary"
-                                className="max-w-64 rounded-sm px-1 font-normal transition-colors group-has-[[data-clear]:hover]/applied:bg-destructive/10 group-has-[[data-clear]:hover]/applied:text-destructive"
+                                className="max-w-64 rounded-sm px-1 font-normal"
                             >
                                 <span className="truncate">{searchValue}</span>
                             </Badge>
@@ -113,14 +113,23 @@ export default function SearchAppliedFilters({
             />
 
             {showClearAll && (
-                <Button
-                    data-clear
-                    variant="destructive"
-                    onClick={handleClearAll}
+                <ActionsDropdownMenu
+                    trigger={(open) => (
+                        <Button
+                            variant={open ? 'secondary' : 'destructive'}
+                            size="icon"
+                        >
+                            <FunnelXIcon />
+                        </Button>
+                    )}
                 >
-                    <FunnelXIcon />
-                    Limpiar
-                </Button>
+                    <DropdownMenuItem
+                        variant="destructive"
+                        onClick={handleClearAll}
+                    >
+                        Limpiar filtros
+                    </DropdownMenuItem>
+                </ActionsDropdownMenu>
             )}
         </div>
     );

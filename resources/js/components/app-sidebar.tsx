@@ -1,3 +1,4 @@
+import ExportDivisionsController from '@/actions/App/Http/Controllers/Personnel/ExportDivisionsController';
 import ExportEmployeesController from '@/actions/App/Http/Controllers/Personnel/ExportEmployeesController';
 import ExportRolesController from '@/actions/App/Http/Controllers/Personnel/ExportRolesController';
 import AppLogo from '@/components/app-logo';
@@ -36,11 +37,12 @@ import {
     ShieldIcon,
     ShieldUserIcon,
     SquareUserRoundIcon,
+    WarehouseIcon,
     type LucideIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 
-type SidebarExportTarget = 'employees' | 'roles';
+type SidebarExportTarget = 'divisions' | 'employees' | 'roles';
 
 const iconMap: Record<string, LucideIcon> = {
     'cloud-download': CloudDownloadIcon,
@@ -49,6 +51,7 @@ const iconMap: Record<string, LucideIcon> = {
     shield: ShieldIcon,
     'shield-user': ShieldUserIcon,
     'square-user-round': SquareUserRoundIcon,
+    warehouse: WarehouseIcon,
 };
 
 const resolveIcon = (iconKey?: string | null): LucideIcon | null => {
@@ -214,6 +217,15 @@ export function AppSidebar() {
                 </SidebarFooter>
             </Sidebar>
 
+            <ExportDialog
+                showTrigger={false}
+                isOpen={activeSidebarExport === 'divisions'}
+                onOpenChange={closeSidebarExportDialog}
+                exportAction={ExportDivisionsController}
+                title="Exportar naves"
+                searchFilters={[]}
+                filterValues={{}}
+            />
             <ExportDialog
                 showTrigger={false}
                 isOpen={activeSidebarExport === 'employees'}

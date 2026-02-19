@@ -12,6 +12,7 @@ class ExportEmployeeRequest extends FormRequest
         $this->merge([
             'has_operator_account' => array_values(array_filter($this->array('has_operator_account'))),
             'role' => array_values(array_filter($this->array('role'))),
+            'division' => array_values(array_filter($this->array('division'))),
         ]);
     }
 
@@ -28,6 +29,8 @@ class ExportEmployeeRequest extends FormRequest
             'has_operator_account.*' => ['string', 'in:active,inactive'],
             'role' => ['sometimes', 'array'],
             'role.*' => ['integer', 'exists:roles,id'],
+            'division' => ['sometimes', 'array'],
+            'division.*' => ['integer', 'exists:divisions,id'],
         ];
     }
 }

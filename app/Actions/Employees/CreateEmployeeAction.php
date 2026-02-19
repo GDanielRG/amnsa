@@ -12,9 +12,9 @@ class CreateEmployeeAction
     /**
      * @param  array<int, int>  $roles
      */
-    public function __invoke(string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = []): Employee
+    public function __invoke(string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = [], ?int $divisionId = null): Employee
     {
-        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles): Employee {
+        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles, $divisionId): Employee {
             $user = User::firstOrCreate(
                 ['email' => $email],
                 [
@@ -31,7 +31,9 @@ class CreateEmployeeAction
             }
 
             if ($hasOperatorAccount) {
-                $employee->operator()->create();
+                $employee->operator()->create([
+                    'division_id' => $divisionId,
+                ]);
             }
 
             return $employee;

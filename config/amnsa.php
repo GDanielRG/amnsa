@@ -32,6 +32,9 @@ return [
             ['manage' => 'Administrar herramientas y modelos de herramientas'],
             ['manage.verify_inspections' => 'Verificar y editar inspecciones'],
         ],
+        'divisions' => [
+            ['manage' => 'Administrar naves'],
+        ],
         'companies' => [
             ['manage' => 'Administrar empresas'],
         ],
@@ -55,6 +58,8 @@ return [
     ],
 
     'user_and_role_permission' => 'personnel.manage',
+
+    'divisions_permission' => 'divisions.manage',
 
     /*
     |--------------------------------------------------------------------------

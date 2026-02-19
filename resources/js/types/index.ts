@@ -24,9 +24,19 @@ export interface Role {
     permissions: Permission[];
 }
 
+export interface Division {
+    id: number;
+    name: string;
+    operators_count?: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Operator {
     id: number;
     employee_id: number;
+    division_id: number;
+    division: Division | null;
     created_at: string;
     updated_at: string;
 }

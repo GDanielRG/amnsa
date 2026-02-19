@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Division;
-use App\Models\Employee;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,10 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('operators', function (Blueprint $table) {
+        Schema::create('divisions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Employee::class)->constrained();
-            $table->foreignIdFor(Division::class)->constrained();
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -21,6 +18,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('operators');
+        Schema::dropIfExists('divisions');
     }
 };

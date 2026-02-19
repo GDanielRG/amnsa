@@ -21,7 +21,7 @@ class StoreEmployeeRequest extends FormRequest
             'roles' => ['nullable', 'array'],
             'roles.*' => ['exists:roles,id'],
             'get_low_inventory_notification' => ['required', 'boolean'],
-            'has_operator_account' => ['required', 'boolean'],
+            'division' => ['nullable', 'exists:divisions,id'],
         ];
     }
 }

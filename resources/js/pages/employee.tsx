@@ -22,11 +22,11 @@ import {
     BanIcon,
     BellIcon,
     BellOffIcon,
-    CheckIcon,
     MailIcon,
     PencilIcon,
     ShieldIcon,
     TrashIcon,
+    WarehouseIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -76,19 +76,13 @@ export default function EmployeeShow({
                                 {employee.user.email}
                             </Badge>
                         </a>
-                        <Badge variant="outline">
-                            {employee.operator ? (
-                                <>
-                                    <CheckIcon />
-                                    Afilador
-                                </>
-                            ) : (
-                                <>
-                                    <BanIcon />
-                                    No afilador
-                                </>
-                            )}
-                        </Badge>
+                        {employee.operator?.division && (
+                            <Badge variant="outline">
+                                Afilador
+                                <WarehouseIcon />
+                                {employee.operator.division.name}
+                            </Badge>
+                        )}
                         <Badge variant="outline">
                             {employee.get_low_inventory_notification ? (
                                 <>
