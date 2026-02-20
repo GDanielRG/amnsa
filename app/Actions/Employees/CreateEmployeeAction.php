@@ -12,9 +12,9 @@ class CreateEmployeeAction
     /**
      * @param  array<int, int>  $roles
      */
-    public function __invoke(string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = [], ?int $divisionId = null): Employee
+    public function __invoke(string $name, string $email, bool $getLowInventoryNotification, array $roles = [], ?int $divisionId = null): Employee
     {
-        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles, $divisionId): Employee {
+        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $roles, $divisionId): Employee {
             $user = User::firstOrCreate(
                 ['email' => $email],
                 [
@@ -30,7 +30,7 @@ class CreateEmployeeAction
                 $employee->syncRoles(Role::whereIn('id', $roles)->get());
             }
 
-            if ($hasOperatorAccount) {
+            if ($divisionId !== null) {
                 $employee->operator()->create([
                     'division_id' => $divisionId,
                 ]);

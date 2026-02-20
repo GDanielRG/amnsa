@@ -51,7 +51,6 @@ class EmployeeController extends Controller
             name: $request->name,
             email: $request->email,
             getLowInventoryNotification: $request->get_low_inventory_notification,
-            hasOperatorAccount: $request->division !== null,
             roles: $request->roles ?? [],
             divisionId: $request->division,
         );
@@ -88,7 +87,6 @@ class EmployeeController extends Controller
             name: $request->name,
             email: $request->email,
             getLowInventoryNotification: $request->get_low_inventory_notification,
-            hasOperatorAccount: $request->division !== null,
             roles: $request->roles ?? [],
             divisionId: $request->division,
         )]);

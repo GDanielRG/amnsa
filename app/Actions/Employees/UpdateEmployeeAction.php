@@ -12,9 +12,9 @@ class UpdateEmployeeAction
     /**
      * @param  array<int, int>  $roles
      */
-    public function __invoke(Employee $employee, string $name, string $email, bool $getLowInventoryNotification, bool $hasOperatorAccount, array $roles = [], ?int $divisionId = null): Employee
+    public function __invoke(Employee $employee, string $name, string $email, bool $getLowInventoryNotification, array $roles = [], ?int $divisionId = null): Employee
     {
-        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $hasOperatorAccount, $roles, $employee, $divisionId) {
+        return DB::transaction(function () use ($name, $email, $getLowInventoryNotification, $roles, $employee, $divisionId) {
             $employee->user->update([
                 'name' => $name,
                 'email' => $email,
@@ -26,7 +26,7 @@ class UpdateEmployeeAction
 
             $employee->syncRoles(Role::whereIn('id', $roles)->get());
 
-            if ($hasOperatorAccount) {
+            if ($divisionId !== null) {
                 $operator = Operator::withTrashed()->where('employee_id', $employee->id)->first();
                 if ($operator) {
                     $operator->restore();
