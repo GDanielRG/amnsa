@@ -14,6 +14,23 @@ export type Auth = {
     user: User;
 };
 
+export type Flash = {
+    success?: string;
+    error?: string;
+    info?: string;
+    warning?: string;
+};
+
+export type SharedData = {
+    name: string;
+    auth: Auth;
+    navigation: {
+        sidebar: Record<string, unknown>[];
+    };
+    sidebarOpen: boolean;
+    [key: string]: unknown;
+};
+
 export type TwoFactorSetupData = {
     svg: string;
     url: string;

@@ -14,10 +14,10 @@ it('sends a verification notification when requested', function () {
     actingAs($user);
 
     visit('/email/verify')
-        ->assertSee('Verify email')
+        ->assertSee('Verifica tu correo')
         ->assertPathIs('/email/verify')
-        ->click('Resend verification email')
-        ->assertSee('A new verification link has been sent to the email address you provided during registration.')
+        ->click('Reenviar correo de verificación')
+        ->assertSee('Se envió un nuevo enlace de verificación al correo que proporcionaste durante el registro.')
         ->assertNoSmoke();
 
     Notification::assertSentTo($user, VerifyEmail::class);

@@ -1,9 +1,12 @@
+import type { InertiaLinkProps } from '@inertiajs/react';
 import type { ReactNode } from 'react';
-import type { BreadcrumbItem } from './navigation';
 
 export type AppLayoutProps = {
     children: ReactNode;
-    breadcrumbs?: BreadcrumbItem[];
+    title: string;
+    backAction?: InertiaLinkProps['href'];
+    header?: ReactNode;
+    titlePrefix?: ReactNode;
 };
 
 export type AuthLayoutProps = {

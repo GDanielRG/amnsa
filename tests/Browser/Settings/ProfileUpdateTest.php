@@ -8,8 +8,8 @@ it('displays the profile page', function () {
     actingAs(User::factory()->create());
 
     visit('/settings/profile')
-        ->assertSee('Profile information')
-        ->assertSee('Update your name and email address')
+        ->assertSee('Información del perfil')
+        ->assertSee('Actualiza tu nombre y correo electrónico')
         ->assertNoSmoke();
 });
 
@@ -19,11 +19,11 @@ it('allows profile information to be updated', function () {
     actingAs($user);
 
     visit('/settings/profile')
-        ->assertSee('Profile information')
+        ->assertSee('Información del perfil')
         ->type('name', 'Updated User')
         ->type('email', 'updated@example.com')
         ->press('@update-profile-button')
-        ->assertSee('Saved')
+        ->assertSee('Guardado')
         ->assertNoSmoke();
 
     $user->refresh();
@@ -41,7 +41,7 @@ it('preserves email verification status when email address is unchanged', functi
     visit('/settings/profile')
         ->type('name', 'Updated User')
         ->press('@update-profile-button')
-        ->assertSee('Saved')
+        ->assertSee('Guardado')
         ->assertNoSmoke();
 
     expect($user->fresh()->email_verified_at)->not->toBeNull();
@@ -53,9 +53,9 @@ it('allows users to delete their account', function () {
     actingAs($user);
 
     visit('/settings/profile')
-        ->assertSee('Delete account')
+        ->assertSee('Eliminar cuenta')
         ->press('@delete-user-button')
-        ->assertSee('Are you sure you want to delete your account?')
+        ->assertSee('¿Estás seguro de que deseas eliminar tu cuenta?')
         ->type('password', 'password')
         ->press('@confirm-delete-user-button')
         ->assertPathIs('/')
@@ -71,10 +71,10 @@ it('requires correct password to delete account', function () {
 
     visit('/settings/profile')
         ->press('@delete-user-button')
-        ->assertSee('Are you sure you want to delete your account?')
+        ->assertSee('¿Estás seguro de que deseas eliminar tu cuenta?')
         ->type('password', 'wrong-password')
         ->press('@confirm-delete-user-button')
-        ->assertSee('The password is incorrect')
+        ->assertSee('La contraseña es incorrecta.')
         ->assertNoSmoke();
 
     expect($user->fresh())->not->toBeNull();

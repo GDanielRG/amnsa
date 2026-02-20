@@ -11,8 +11,8 @@ use function Pest\Laravel\assertGuest;
 
 it('displays the login page', function () {
     visit('/login')
-        ->assertSee('Log in to your account')
-        ->assertSee('Enter your email and password below to log in')
+        ->assertSee('Inicia sesión en tu cuenta')
+        ->assertSee('Ingresa tu correo electrónico y contraseña para acceder')
         ->assertNoSmoke();
 });
 
@@ -23,7 +23,7 @@ it('allows users to authenticate', function () {
         ->type('email', $user->email)
         ->type('password', 'password')
         ->press('@login-button')
-        ->assertSee('Dashboard')
+        ->assertSee('Panel')
         ->assertPathIs('/dashboard')
         ->assertNoSmoke();
 
@@ -60,7 +60,7 @@ it('prevents authentication with invalid password', function () {
         ->type('password', 'wrong-password')
         ->press('@login-button')
         ->assertPathIs('/login')
-        ->assertSee('These credentials do not match our records.')
+        ->assertSee('Estas credenciales no coinciden con nuestros registros.')
         ->assertNoSmoke();
 
     assertGuest();
@@ -72,7 +72,7 @@ it('allows users to logout', function () {
     actingAs($user);
 
     visit('/dashboard')
-        ->assertSee('Dashboard')
+        ->assertSee('Panel')
         ->assertPathIs('/dashboard')
         ->assertNoSmoke()
         ->click('@sidebar-menu-button')

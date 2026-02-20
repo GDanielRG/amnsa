@@ -10,8 +10,8 @@ it('displays the password update page', function () {
     actingAs(User::factory()->create());
 
     visit('/settings/password')
-        ->assertSee('Update password')
-        ->assertSee('Ensure your account is using a long, random password to stay secure')
+        ->assertSee('Actualiza tu contraseña')
+        ->assertSee('Asegúrate de que tu cuenta use una contraseña larga y aleatoria para mantenerse segura')
         ->assertNoSmoke();
 });
 
@@ -25,7 +25,7 @@ it('allows password updates', function () {
         ->type('password', 'new-password')
         ->type('password_confirmation', 'new-password')
         ->press('@update-password-button')
-        ->assertSee('Saved')
+        ->assertSee('Guardada')
         ->assertNoSmoke();
 
     assertCredentials([
@@ -44,7 +44,7 @@ it('requires correct password to update password', function () {
         ->type('password', 'new-password')
         ->type('password_confirmation', 'new-password')
         ->press('@update-password-button')
-        ->assertSee('The password is incorrect')
+        ->assertSee('La contraseña es incorrecta.')
         ->assertNoSmoke();
 
     assertInvalidCredentials([

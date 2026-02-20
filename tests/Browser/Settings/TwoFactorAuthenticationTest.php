@@ -18,12 +18,12 @@ it('displays the two factor settings page', function () {
     actingAs(User::factory()->create());
 
     visit('/settings/two-factor')
-        ->assertSee('Confirm your password')
+        ->assertSee('Confirma tu contraseña')
         ->type('password', 'password')
         ->press('@confirm-password-button')
-        ->assertSee('Two-factor authentication')
+        ->assertSee('Autenticación de dos factores')
         ->assertPathIs('/settings/two-factor')
-        ->assertSee('Disabled')
+        ->assertSee('Desactivado')
         ->assertNoSmoke();
 });
 
@@ -40,9 +40,9 @@ it('displays two factor settings page without password confirmation when disable
     actingAs(User::factory()->create());
 
     visit('/settings/two-factor')
-        ->assertSee('Two-factor authentication')
+        ->assertSee('Autenticación de dos factores')
         ->assertPathIs('/settings/two-factor')
-        ->assertSee('Disabled')
+        ->assertSee('Desactivado')
         ->assertNoSmoke();
 });
 

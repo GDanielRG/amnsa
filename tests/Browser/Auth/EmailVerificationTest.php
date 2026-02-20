@@ -14,7 +14,7 @@ it('displays the email verification page', function () {
     actingAs($user);
 
     visit('/email/verify')
-        ->assertSee('Verify email')
+        ->assertSee('Verifica tu correo')
         ->assertPathIs('/email/verify')
         ->assertNoSmoke();
 
@@ -35,7 +35,7 @@ it('allows users to verify their email', function () {
     actingAs($user);
 
     visit($verificationUrl)
-        ->assertSee('Dashboard')
+        ->assertSee('Panel')
         ->assertPathIs('/dashboard')
         ->assertNoSmoke();
 
@@ -93,7 +93,7 @@ it('redirects verified users to dashboard from verification prompt', function ()
     actingAs($user);
 
     visit('/email/verify')
-        ->assertSee('Dashboard')
+        ->assertSee('Panel')
         ->assertPathIs('/dashboard')
         ->assertNoSmoke();
 
@@ -116,7 +116,7 @@ it('redirects already verified users visiting verification link without firing e
 
     visit($verificationUrl)
         ->assertPathIs('/dashboard')
-        ->assertSee('Dashboard')
+        ->assertSee('Panel')
         ->assertNoSmoke();
 
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();

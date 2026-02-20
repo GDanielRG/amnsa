@@ -9,7 +9,7 @@ it('redirects to login when accessing two factor challenge without authenticatio
     }
 
     visit('/two-factor-challenge')
-        ->assertSee('Log in to your account')
+        ->assertSee('Inicia sesión en tu cuenta')
         ->assertPathIs('/login')
         ->assertNoSmoke();
 });

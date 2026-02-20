@@ -4,7 +4,7 @@ use function Pest\Laravel\assertAuthenticated;
 
 it('displays the registration page', function () {
     visit('/register')
-        ->assertSee('Create an account')
+        ->assertSee('Crea una cuenta')
         ->assertNoSmoke();
 });
 
