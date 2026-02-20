@@ -21,6 +21,7 @@ import ColumnHeaderMenu from '@/components/table/column-header-menu';
 import ColumnVisibilityMenu, {
     type ColumnDef,
 } from '@/components/table/column-visibility-menu';
+import { useSort } from '@/components/table/use-sort';
 import RowActionsCell from '@/components/table/row-actions-cell';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -60,6 +61,7 @@ export default function Employees({
     filters: SearchFilter[];
 }) {
     const search = useSearch(index, filters);
+    const { sort, order, handleSort } = useSort();
     const [columnVisibility, setColumnVisibility] = useState<
         Record<string, boolean>
     >({
@@ -152,6 +154,9 @@ export default function Employees({
                                     handleColumnVisibilityChange
                                 }
                                 onDelete={setDeletingEmployee}
+                                sort={sort}
+                                order={order}
+                                onSort={handleSort}
                             />
                         )}
                     </>
@@ -190,11 +195,17 @@ function EmployeesTable({
     columnVisibility,
     onColumnVisibilityChange,
     onDelete,
+    sort,
+    order,
+    onSort,
 }: {
     employees: PaginatedData<Employee>;
     columnVisibility: Record<string, boolean>;
     onColumnVisibilityChange: (key: string, visible: boolean) => void;
     onDelete: (employee: Employee) => void;
+    sort: string | null;
+    order: 'asc' | 'desc' | null;
+    onSort: (key: string, order: 'asc' | 'desc') => void;
 }) {
     const getInitials = useInitials();
 
@@ -225,6 +236,10 @@ function EmployeesTable({
                                                 false,
                                             )
                                         }
+                                        sortKey="name"
+                                        currentSort={sort}
+                                        currentOrder={order}
+                                        onSort={onSort}
                                     />
                                 </TableHead>
                             )}

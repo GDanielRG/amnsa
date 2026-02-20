@@ -4,6 +4,7 @@ namespace App\Http\Requests\Roles;
 
 use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexRoleRequest extends FormRequest
 {
@@ -16,6 +17,8 @@ class IndexRoleRequest extends FormRequest
     {
         return [
             'search' => ['nullable', 'string', 'max:255'],
+            'sort' => ['nullable', 'string', Rule::in(['name'])],
+            'order' => ['sometimes', 'string', Rule::in(['asc', 'desc']), 'required_with:sort'],
         ];
     }
 }

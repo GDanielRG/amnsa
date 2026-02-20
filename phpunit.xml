@@ -28,5 +28,6 @@
         <env name="APP_FALLBACK_LOCALE" value="es"/>
         <env name="APP_FAKER_LOCALE" value="es_ES"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="DB_DATABASE" value="test_db"/>
     </php>
 </phpunit>

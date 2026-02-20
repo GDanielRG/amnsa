@@ -28,6 +28,7 @@ class EmployeeController extends Controller
     {
         return Inertia::render('employees', [
             'employees' => Employee::filter($request->only('search', 'has_operator_account', 'role', 'division'))
+                ->sort($request->input('sort'), $request->input('order'))
                 ->with(['user', 'operator.division', 'roles.permissions'])
                 ->paginate()->withQueryString(),
             'permissionNames' => $permissionsAction(),

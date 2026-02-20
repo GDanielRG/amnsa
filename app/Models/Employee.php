@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
+/** @property-read bool $is_only_employee_with_user_and_role_permission */
 class Employee extends Model
 {
     use HasFactory, HasRoles, SoftDeletes;
@@ -78,6 +79,18 @@ class Employee extends Model
 
             $query->whereHas('operator', fn (Builder $q) => $q->whereIn('division_id', $divisionIds));
         });
+    }
+
+    public function scopeSort(Builder $query, ?string $sort, ?string $order = 'asc'): void
+    {
+        $direction = $order === 'desc' ? 'desc' : 'asc';
+
+        if ($sort === 'name') {
+            $query
+                ->leftJoin('users as sort_users', 'sort_users.id', '=', 'employees.user_id')
+                ->select('employees.*')
+                ->orderBy('sort_users.name', $direction);
+        }
     }
 
     protected function isOnlyEmployeeWithUserAndRolePermission(): Attribute

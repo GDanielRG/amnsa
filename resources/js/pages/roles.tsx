@@ -21,6 +21,7 @@ import ColumnHeaderMenu from '@/components/table/column-header-menu';
 import ColumnVisibilityMenu, {
     type ColumnDef,
 } from '@/components/table/column-visibility-menu';
+import { useSort } from '@/components/table/use-sort';
 import RowActionsCell from '@/components/table/row-actions-cell';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,6 +45,7 @@ const toggleableColumns: ColumnDef[] = [
 
 export default function Roles({ roles }: { roles: PaginatedData<Role> }) {
     const search = useSearch(index);
+    const { sort, order, handleSort } = useSort();
     const [columnVisibility, setColumnVisibility] = useState<
         Record<string, boolean>
     >({
@@ -133,6 +135,9 @@ export default function Roles({ roles }: { roles: PaginatedData<Role> }) {
                                     handleColumnVisibilityChange
                                 }
                                 onDelete={setDeletingRole}
+                                sort={sort}
+                                order={order}
+                                onSort={handleSort}
                             />
                         )}
                     </>
@@ -171,11 +176,17 @@ function RolesTable({
     columnVisibility,
     onColumnVisibilityChange,
     onDelete,
+    sort,
+    order,
+    onSort,
 }: {
     roles: PaginatedData<Role>;
     columnVisibility: Record<string, boolean>;
     onColumnVisibilityChange: (key: string, visible: boolean) => void;
     onDelete: (role: Role) => void;
+    sort: string | null;
+    order: 'asc' | 'desc' | null;
+    onSort: (key: string, order: 'asc' | 'desc') => void;
 }) {
     const isVisible = (key: string) => columnVisibility[key] !== false;
     const visibleColumnCount = ['name', 'permissions'].filter(isVisible).length;
@@ -198,6 +209,10 @@ function RolesTable({
                                                 false,
                                             )
                                         }
+                                        sortKey="name"
+                                        currentSort={sort}
+                                        currentOrder={order}
+                                        onSort={onSort}
                                     />
                                 </TableHead>
                             )}

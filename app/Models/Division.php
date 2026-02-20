@@ -25,4 +25,13 @@ class Division extends Model
             $query->where('name', 'ilike', "%{$search}%");
         });
     }
+
+    public function scopeSort(Builder $query, ?string $sort, ?string $order = 'asc'): void
+    {
+        $allowed = ['name'];
+
+        if ($sort && in_array($sort, $allowed, true)) {
+            $query->orderBy($sort, $order === 'desc' ? 'desc' : 'asc');
+        }
+    }
 }

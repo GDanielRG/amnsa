@@ -25,6 +25,7 @@ class RoleController extends Controller
     {
         return Inertia::render('roles', [
             'roles' => Role::filter($request->only('search'))
+                ->sort($request->input('sort'), $request->input('order'))
                 ->with('permissions')
                 ->paginate()->withQueryString(),
         ]);

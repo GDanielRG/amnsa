@@ -24,6 +24,7 @@ class DivisionController extends Controller
     {
         return Inertia::render('divisions', [
             'divisions' => Division::filter($request->only('search'))
+                ->sort($request->input('sort'), $request->input('order'))
                 ->withCount('operators')
                 ->paginate()->withQueryString(),
         ]);

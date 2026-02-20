@@ -20,6 +20,7 @@ import ColumnHeaderMenu from '@/components/table/column-header-menu';
 import ColumnVisibilityMenu, {
     type ColumnDef,
 } from '@/components/table/column-visibility-menu';
+import { useSort } from '@/components/table/use-sort';
 import RowActionsCell from '@/components/table/row-actions-cell';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -48,6 +49,7 @@ export default function Divisions({
     divisions: PaginatedData<Division>;
 }) {
     const search = useSearch(index);
+    const { sort, order, handleSort } = useSort();
     const [columnVisibility, setColumnVisibility] = useState<
         Record<string, boolean>
     >({
@@ -139,6 +141,9 @@ export default function Divisions({
                                     handleColumnVisibilityChange
                                 }
                                 onDelete={setDeletingDivision}
+                                sort={sort}
+                                order={order}
+                                onSort={handleSort}
                             />
                         )}
                     </>
@@ -177,11 +182,17 @@ function DivisionsTable({
     columnVisibility,
     onColumnVisibilityChange,
     onDelete,
+    sort,
+    order,
+    onSort,
 }: {
     divisions: PaginatedData<Division>;
     columnVisibility: Record<string, boolean>;
     onColumnVisibilityChange: (key: string, visible: boolean) => void;
     onDelete: (division: Division) => void;
+    sort: string | null;
+    order: 'asc' | 'desc' | null;
+    onSort: (key: string, order: 'asc' | 'desc') => void;
 }) {
     const isVisible = (key: string) => columnVisibility[key] !== false;
     const visibleColumnCount = ['name', 'operators_count'].filter(
@@ -206,6 +217,10 @@ function DivisionsTable({
                                                 false,
                                             )
                                         }
+                                        sortKey="name"
+                                        currentSort={sort}
+                                        currentOrder={order}
+                                        onSort={onSort}
                                     />
                                 </TableHead>
                             )}

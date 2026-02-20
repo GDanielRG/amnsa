@@ -4,6 +4,7 @@ namespace App\Http\Requests\Employees;
 
 use App\Models\Employee;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexEmployeeRequest extends FormRequest
 {
@@ -31,6 +32,8 @@ class IndexEmployeeRequest extends FormRequest
             'role.*' => ['integer', 'exists:roles,id'],
             'division' => ['sometimes', 'array'],
             'division.*' => ['integer', 'exists:divisions,id'],
+            'sort' => ['nullable', 'string', Rule::in(['name'])],
+            'order' => ['sometimes', 'string', Rule::in(['asc', 'desc']), 'required_with:sort'],
         ];
     }
 }

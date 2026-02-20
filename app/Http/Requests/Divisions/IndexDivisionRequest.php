@@ -4,6 +4,7 @@ namespace App\Http\Requests\Divisions;
 
 use App\Models\Division;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndexDivisionRequest extends FormRequest
 {
@@ -16,6 +17,8 @@ class IndexDivisionRequest extends FormRequest
     {
         return [
             'search' => ['nullable', 'string', 'max:255'],
+            'sort' => ['nullable', 'string', Rule::in(['name'])],
+            'order' => ['sometimes', 'string', Rule::in(['asc', 'desc']), 'required_with:sort'],
         ];
     }
 }

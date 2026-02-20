@@ -20,6 +20,8 @@ interface UseSearchReturn {
     filters: SearchFilter[];
     initialSearch: string;
     filterValues: Record<string, string[]>;
+    currentSort: string | null;
+    currentOrder: 'asc' | 'desc' | null;
     hasActiveFilters: boolean;
 }
 
@@ -38,6 +40,12 @@ export function useSearch(
     }
 
     const initialSearch = queryParams.get('search') ?? '';
+    const currentSort = queryParams.get('sort');
+    const currentOrder = currentSort
+        ? queryParams.get('order') === 'desc'
+            ? 'desc'
+            : 'asc'
+        : null;
     const hasActiveFilterValues = Object.values(filterValues).some(
         (values) => values.length > 0,
     );
@@ -47,6 +55,8 @@ export function useSearch(
         filters,
         initialSearch,
         filterValues,
+        currentSort,
+        currentOrder,
         hasActiveFilters: hasActiveFilterValues || initialSearch.length > 0,
     };
 }
@@ -82,6 +92,11 @@ export function SearchControls({
                 const searchValue =
                     (data as Record<string, string>).search ?? '';
                 if (searchValue) merged.search = searchValue;
+
+                if (search.currentSort) {
+                    merged.sort = search.currentSort;
+                    merged.order = search.currentOrder ?? 'asc';
+                }
 
                 return merged;
             }}
